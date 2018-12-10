@@ -1,70 +1,75 @@
 # CASQUE SNR Multi-factor Authenticator
 
-WSO2 Identity Server is integrated to CASQUE SNR Multi-factor Authentication
-Technology. 
+The CASQUE SNR authenticator allows you to integrate WSO2 Identity Server with CASQUE SNR so that you can use the CASQUE SNR multi-factor authentication technology to authenticate users.
 
-The technology is based on a Challenge-Response protocol with the User having a hand held secure Token that calculates the response to a challenge after the User enters their credentials. There are many different Token forms including Optical, USB Tokens, Contact and Contactless Smartcard and Surrogate Tokens. All have the same highest level Secure processor chips rated at EAL6. There are options for Client and Client-less architectures.
+The CASQUE SNR multi-factor authentication technology is based on the challenge-response protocol where users possess a token that computes the required response to a given challenge. Tokens can be in a variety of forms such as optical, USB, contact and contactless smart-card as well as surrogate tokens. All token forms have the same highest level secure processor chips rated at EAL6. There are options for client and client-less architectures as well.
 
-The CASQUE SNR integration with WSO2 provides universal High Grade Identity Assurance to a Cloud of Web Application Services. This means the User determines who can access their data resources on the Cloud even if these are distributed on diverse Cloud Platforms. 
-CASQUE SNR Tokens can be completely refreshed (unlike existing OTP Tokens) allowing re-use so can offer Identity as a Service to Managed Service Providers.
+Integrating CASQUE SNR with WSO2 Identity Server provides high grade identity assurance to a cloud of Web application services. This means that even if your data is distributed across diverse cloud platforms, you get to determine who can access your data resources on the cloud. 
+
+Unlike OTP tokens, CASQUE SNR tokens can be completely refreshed. Therefore, you can reuse tokens from a pool to provide identity as a service to managed service providers. 
+
+Now that you understand the purpose of the CASQUE SNR authenticator, let’s have a look at how to configure the CASQUE SNR authenticator with WSO2 Identity Server to perform multi-factor authentication.
+
 
 # Prerequisites
 
-[Distributed Management Systems (DMS)](http://www.casque.co.uk/) is the developer of the CASQUE SNR Technology and DMS or its Systems Integrator will supply the full CASQUE SNR System which comprises SAS software to initially populate the Tokens, a batch of "blank" Tokens and the CASQUE SNR Authentication Server Software for Linux or Windows Operating Systems together with CASQUE SNR Players for the desired client platforms. The SAS software enables the Customer to initially populate the blank Tokens - this means that DMS or its Systems Integrator can never be part of the security risk.There is detailed accompanying documentation that gives instruction on installation procedures and deployment options.
+* Download [WSO2 Identity Server](https://wso2.com/identity-and-access-management) and install the product. For detailed installation instructions, see the [Installation Guide](https://docs.wso2.com/display/IS540/Installation+Guide).
+>> Let's refer to the WSO2 Identity Server installation location as <IS_HOME> throughout this document.
+* Get the complete CASQUE SNR system from [DMS (Distributed Management Systems)](http://www.casque.co.uk/) or its systems integrator. The complete CASQUE SNR system is required to authenticate users using the CASQUE SNR multi-factor authentication technology, and includes the following:
+  * SAS software to initially populate the tokens.
+  >> The SAS software allows you to initially populate the blank tokens. This ensures that DMS or its systems integrator can never be a security risk. For information on how to install and deploy the complete CASQUE SNR system, see the documentation.
+  * A batch of blank tokens.
+  * The CASQUE SNR authentication server software for Linux or Windows operating systems.
+  * Appropriate CASQUE SNR player for the client platform.
 
-# Configuring CASQUE SNR Multi-factor Authenticator
+Once you you have all the prerequisites set up, you can follow the instructions in the topics below to configure the CASQUE SNR multi-factor authenticator with the WSO2 Identity Server:
 
-This topic provides instructions on how to configure the CASQUE SNR Multi-factor Authenticator with the WSO2 Identity Server.
+* [Downloading and deploying CASQUE SNR artifacts](#downloading-and-deploying-casque-snr-artifacts)
+* [Configuring WSO2 Identity Server](#configuring-wso2-identity-server)
 
-Download WSO2 Identity Server from the [WSO2 Identity Server](https://wso2.com/identity-and-access-management) and install it by following the instructions in the [Installing the Product](https://docs.wso2.com/display/IS540/Installation+Guide) topic.
+# Downloading and deploying CASQUE SNR artifacts
 
-CASQUE SNR Version 1.1.0 Multi-factor Authenticator is supported by WSO2 Identity Server from version 5.4.0.
+Follow the steps below to download and deploy the CASQUE-SNR artifacts:
 
-# Deploying Artifacts
-
-To download the CASQUE-SNR artifacts, go to CASQUE-SNR on [WSO2 Store](https://store.wso2.com/)
-
-
-
-Artifacts contains org.wso2.carbon.identity.casque.authenticator_1.1.0.jar 
-(The jar can generate by casque_authenticator, you can find this in casque_authenticator/component/org.wso2.carbon.identity.casque.authenticator/target),casque.war and casque.conf
+1. Download the CASQUE SNR authenticator from [WSO2 Store](https://store.wso2.com/). This downloads the org.wso2.carbon.identity.casque.authenticator_1.1.0.jar file.
+>> The CASQUE SNR authenticator version 1.1.0 is supported by WSO2 Identity Server version 5.4.0 and above.
+2. Copy the org.wso2.carbon.identity.casque.authenticator_1.1.0.jar file to the <IS_HOME>/repository/components/dropins directory.
+3. Copy the casque.conf into <IS_HOME>/repository/deployment/server/webapps directory.
+4. Copy the casque.conf into <IS_HOME>/repository/conf directory.
 
 
-1. Copy the connector (org.wso2.carbon.identity.casque.authenticator_1.1.0.jar) into <IS_HOME>/repository/components/dropins directory.
-2. Copy the casque.conf into <IS_HOME>/repository/deployment/server/webapps directory.
-3. Copy the casque.conf into <IS_HOME>/repository/conf directory.
+# Configuring WSO2 Identity Server
+
+Follow the steps below to configure WSO2 Identity Server:
 
 ## Set claims
 
-This topic provides Instructions to set up a mapped claim for the CASQUE SNR Authenticator feature.
+Follow the steps below to set up a mapped claim for the CASQUE SNR authenticator:
 
-1. In the Management console Click Add under the Claims.
-2. Click Add Local Claim.
+1. On the Management console, click **Add** under **Claims**. This displays the **Add New Dialect/Claim** screen.
+2. Click **Add Local Claim**.
 
     ![9](images/9.png "9")
 
-3. Insert the followings
+3. On the **Add Local Claim** screen, specify the followings values for the fields:
 
-
-    Claim URI	 -	http://wso2.org/claims/identity/casqueSnrToken
-
-    Description	-	CASQUE SNR Token ID
-
-    Mapped Attribute(s)	- PRIMARY   displayName 
-
-    If displayName is in use then map to another attribute.
+    * Claim URI	 -	http://wso2.org/claims/identity/casqueSnrToken
+    * Display Name - token_id
+    * Description	-	CASQUE SNR Token ID
+    * Mapped Attribute(s)	- PRIMARY   displayName 
+    > If the displayName attribute is already in use, you need to map another attribute.
 
     ![10](images/10.png "10")
 
-4. Click Add.
-5. Now edit token_id from the list as follows.
+4. Click **Add**.
+5. Edit token_id from the list as follows.
 
         Regular Expression	^[a-fA-F0-9]{3} [0-9]{6}$
         Supported by Default   true
 
      ![11](images/11.png "11")   
 
-6. Now edit displayName (or the other attribute you chose) from the list as follows.
+6. Now edit displayName (or any other attribute that you mapped) from the list as follows.
     
         Regular Expression	^[a-fA-F0-9]{3} [0-9]{6}$
         Supported by Default   true
@@ -131,3 +136,5 @@ Now restart the WSO2 IS Server.
    ![19](images/19.png "19")
 
 10. Click Update. 
+
+Once you complete all the configurations, you can perform user authentication with the CASQUE SNR authenticator.
